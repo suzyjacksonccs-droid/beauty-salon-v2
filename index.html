@@ -164,68 +164,49 @@
       </div>
     </main>
 
-    <!-- BOOKING -->
-    <section id="booking" aria-labelledby="booking-title">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-          <div>
-            <h2 id="booking-title" style="margin:0">Book an Appointment</h2>
-            <p class="small">Fill your details and we’ll confirm your appointment. (This demo stores bookings locally.)</p>
-          </div>
-          <div>
-            <strong style="color:var(--accent)">No credit card required</strong>
-          </div>
-        </div>
+   <!-- 💅 Booking Form Section -->
+<section id="booking" class="booking-section">
+  <h2>Book Your Appointment</h2>
+  <form id="booking-form">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <input type="tel" name="phone" placeholder="Your Phone Number" required>
+    <input type="date" name="date" required>
+    <select name="service" required>
+      <option value="">Select a Service</option>
+      <option value="Manicure">Manicure</option>
+      <option value="Pedicure">Pedicure</option>
+      <option value="Hair Styling">Hair Styling</option>
+      <option value="Facial">Facial</option>
+    </select>
+    <textarea name="message" placeholder="Additional Notes"></textarea>
+    <button type="submit">Book Now</button>
+  </form>
+</section>
 
-        <form id="bookingForm" style="margin-top:16px">
-          <div class="row">
-            <div style="flex:1">
-              <label for="name">Full name</label>
-              <input id="name" type="text" placeholder="Your name" required />
-            </div>
-            <div style="width:220px">
-              <label for="phone">Phone</label>
-              <input id="phone" type="tel" placeholder="+20 1XXXXXXXXX" required />
-            </div>
-          </div>
+<!-- 💫 Add this script at the bottom of your HTML file (just before </body>) -->
+<script>
+document.getElementById("booking-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-          <div class="row">
-            <div style="flex:1">
-              <label for="email">Email</label>
-              <input id="email" type="email" placeholder="name@example.com" />
-            </div>
-            <div style="width:220px">
-              <label for="date">Preferred date</label>
-              <input id="date" type="date" required />
-            </div>
-          </div>
+  const form = e.target;
+  const data = Object.fromEntries(new FormData(form));
 
-          <div style="margin-bottom:8px">
-            <label for="service">Service</label>
-            <select id="service" required>
-              <option value="">Choose a service</option>
-              <option>Manicure</option>
-              <option>Pedicure</option>
-              <option>Nail Art</option>
-              <option>Haircut & Styling</option>
-              <option>Blowout</option>
-              <option>Facial</option>
-              <option>Spa Package</option>
-            </select>
-          </div>
+  try {
+    await fetch("YOUR_N8N_WEBHOOK_URL", {   // 👈 Replace this with your actual webhook link
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-          <div style="margin-bottom:6px">
-            <label for="notes">Notes (optional)</label>
-            <textarea id="notes" placeholder="Allergies, color preferences, or special requests"></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn">Confirm Booking</button>
-            <div class="small">Or <a href="#" id="whatsappQuick">send via WhatsApp</a></div>
-          </div>
-        </form>
-      </div>
-    </section>
+    alert("Thank you! Your booking has been sent 💖");
+    form.reset();
+  } catch (error) {
+    alert("Oops! Something went wrong. Please try again.");
+    console.error(error);
+  }
+});
+</script>
 
     <!-- ABOUT / SERVICES -->
     <section id="services">
